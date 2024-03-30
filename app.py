@@ -4,7 +4,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 import os
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 import google.generativeai as genai
-from langchain.vectorstores import FAISS
+from langchain_community.vectorstores import FAISS
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.chains.question_answering import load_qa_chain
 from langchain.prompts import PromptTemplate
@@ -12,6 +12,11 @@ from dotenv import load_dotenv
 import pandas as pd
 from fastapi import FastAPI #import class FastAPI() từ thư viện fastapi
 from fastapi import FastAPI, Request, Query
+
+from transformers import RobertaForSequenceClassification, AutoTokenizer
+import torch
+import uvicorn
+
 
 app = FastAPI() # gọi constructor và gán vào biến app
 
@@ -152,3 +157,27 @@ def main():
 async def chat_response(msg: str = Query(...)): 
     user_response = user_input(msg)
     return {"message": user_response["output_text"]}
+
+@app.get("/api/sentiment/")
+async def get_bot_response(msg: str = Query(...)):
+    model = RobertaForSequenceClassification.from_pretrained("wonrax/phobert-base-vietnamese-sentiment")
+
+    tokenizer = AutoTokenizer.from_pretrained("wonrax/phobert-base-vietnamese-sentiment", use_fast=False)
+
+    input_ids = torch.tensor([tokenizer.encode(msg)])
+
+    with torch.no_grad():
+        out = model(input_ids)
+        result = out.logits.softmax(dim=-1).tolist()[0]  
+
+        sentiments = ["Tiêu cực", "Tích cực", "Trung tính"]
+        max_index = result.index(max(result))  
+        max_sentiment = sentiments[max_index]  
+
+        return {max_sentiment: result[max_index]}
+    # Output:
+        # [[0.002, 0.988, 0.01]]
+        #     ^      ^      ^
+        #    NEG    POS    NEU
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
