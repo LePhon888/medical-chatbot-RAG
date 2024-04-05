@@ -10,10 +10,7 @@ from langchain.chains.question_answering import load_qa_chain
 from langchain.prompts import PromptTemplate
 from dotenv import load_dotenv
 import pandas as pd
-from fastapi import FastAPI, Request, Query
-
-import uvicorn
-
+from fastapi import FastAPI 
 
 app = FastAPI() 
 
@@ -123,12 +120,3 @@ def main():
     df = pd.DataFrame(data)
     df.to_excel('output.xlsx', index=False, header=False)
 
-
-    
-@app.get("/api/chat/") 
-async def chat_response(msg: str = Query(...)): 
-    user_response = user_input(msg)
-    return {"message": user_response["output_text"]}
-
-if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
