@@ -44,5 +44,5 @@ jobs:
         docker buildx create --use
         docker buildx build \
           --file Dockerfile \
-          --tag ${{ secrets.DOCKER_USERNAME }} /medical-chatbot-rag:latest \
+          --tag ${{ secrets.DOCKER_USERNAME }}/medical-chatbot-rag:latest \
           --push .
