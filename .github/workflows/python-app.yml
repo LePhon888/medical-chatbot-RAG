@@ -46,10 +46,10 @@ jobs:
           --file Dockerfile \
           --tag ${{ secrets.DOCKER_USERNAME }}/medical-chatbot-rag:latest \
           --push .
-          
-    - name: Deploy to production
-      uses: johnbeynon/render-deploy-action@v0.0.8
+
+    - name: Trigger deployment
+      uses: sws2apps/render-deployment@main #consider using pin for dependabot auto update
       with:
-        service-id: ${{ secrets.MY_RENDER_SERVICE_ID }}
-        api-key: ${{ secrets.MY_RENDER_API_KEY }}
-        wait-for-success: true
+        serviceId: ${{ secrets.MY_RENDER_SERVICE_ID }}
+        apiKey: ${{ secrets.MY_RENDER_API_KEY }}
+        multipleDeployment: false #optional, default true
