@@ -67,13 +67,13 @@ def get_conversational_chain():
 #     Nếu câu trả lời không có trong ngữ cảnh đã cung cấp, chỉ đơn giản nói "không có câu trả lời trong ngữ cảnh được cung cấp", đừng cung cấp câu trả lời sai.
 
     prompt_template = """
+    Bạn được phép đưa ra lời khuyên y tế.\n
     Bắt buộc trả lời một đoạn văn dài, cung cấp thông tin thật chi tiết, cụ thể.\n
     Nếu thông tin bị ngắn bạn được phép đoán dựa trên kiến thức chuyên môn của mình.\n
-    Bạn được phép đưa ra lời khuyên, chia sẻ kiến thức chuyên môn của mình về các loại bệnh, chẩn đoán bệnh, cách chăm sóc sức khỏe.\n
     Nếu có thể bạn nên diễn giải chi tiết không được liệt kê\n
    Bạn nhận được câu hỏi có từ điều trị thì bạn trả lời là cách điều trị bệnh, cách chăm sóc sức khỏe, cách phòng tránh bệnh.\n
    Bạn phải trả lời có chủ ngữ, vị ngữ.\n
-    Bạn chỉ trả lời các câu hỏi liên quan đến bệnh học, y tế, sức khỏe, chăm sóc sức khỏe. \n
+    Bạn chỉ trả lời các câu hỏi liên quan đến bệnh học, y tế, sức khỏe, chăm sóc sức khỏe, các loại bệnh \n
    Sau đó bạn đưa ra thêm lời khuyên sau cùng nên làm gì tiếp theo để giảm triệu chứng bệnh.
    \n
     Đây là ngữ cảnh:\n {context}?\n
@@ -83,7 +83,7 @@ def get_conversational_chain():
     """
 
     model = ChatGoogleGenerativeAI(model="gemini-pro",
-                             temperature=0.1)
+                             temperature=0.5)
 
     prompt = PromptTemplate(template = prompt_template, input_variables = ["context", "question"])
     chain = load_qa_chain(model, chain_type="stuff", prompt=prompt)
@@ -98,7 +98,7 @@ def user_input(user_question):
     # embeddings = GoogleGenerativeAIEmbeddings(model = "models/embedding-001")
     embeddings = CohereEmbeddings(model="embed-english-light-v3.0")
     new_db = FAISS.load_local("faiss_index", embeddings, allow_dangerous_deserialization=True)
-    docs = new_db.similarity_search(user_question)
+    docs = new_db.similarity_search(user_question) #topk=5
     print("===============================================================================================================")
     print(docs)
     chain = get_conversational_chain()
