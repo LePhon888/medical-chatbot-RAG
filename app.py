@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 import pandas as pd
 from fastapi import FastAPI, Request, Query
 from langchain_cohere import CohereEmbeddings
-from fastapi.middleware.cors import CORSMiddleware
+# from fastapi.middleware.cors import CORSMiddleware
 
 
 import uvicorn
@@ -23,7 +23,7 @@ app = FastAPI()
 origins = ["*"]
 
 app.add_middleware(
-    CORSMiddleware,
+    # CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
