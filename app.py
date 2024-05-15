@@ -12,6 +12,9 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, Request, Query
 from langchain_cohere import CohereEmbeddings
 import uvicorn
+from cohere.types import ChatRequestToolResultsItem
+
+
 app = FastAPI() 
 
 load_dotenv()
