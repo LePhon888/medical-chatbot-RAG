@@ -11,23 +11,8 @@ from langchain.prompts import PromptTemplate
 from dotenv import load_dotenv
 from fastapi import FastAPI, Request, Query
 from langchain_cohere import CohereEmbeddings
-# from fastapi.middleware.cors import CORSMiddleware
-
-
 import uvicorn
-
-
 app = FastAPI() 
-
-# origins = ["*"]
-
-# app.add_middleware(
-#     # CORSMiddleware,
-#     allow_origins=origins,
-#     allow_credentials=True,
-#     allow_methods=["*"],
-#     allow_headers=["*"],
-# )
 
 load_dotenv()
 os.getenv("GOOGLE_API_KEY")
