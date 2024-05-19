@@ -9,3 +9,4 @@ langchain_google_genai
 fastapi
 transformers
 langchain_cohere
+langchain_community
