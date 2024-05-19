@@ -48,14 +48,6 @@ def get_vector_store(text_chunks):
 
 
 def get_conversational_chain():
-#         Bạn được phép đưa ra lời khuyên y tế.\n
-#     Bắt buộc trả lời một đoạn văn dài, cung cấp thông tin thật chi tiết, cụ thể.\n
-#     Nếu thông tin bị ngắn bạn được phép đoán dựa trên kiến thức chuyên môn của mình.\n
-#     Nếu có thể bạn nên diễn giải chi tiết không được liệt kê\n
-#    Bạn nhận được câu hỏi có từ điều trị thì bạn trả lời là cách điều trị bệnh, cách chăm sóc sức khỏe, cách phòng tránh bệnh.\n
-#    Bạn phải trả lời có chủ ngữ, vị ngữ.\n
-#     Bạn chỉ trả lời các câu hỏi liên quan đến bệnh học, y tế, sức khỏe, chăm sóc sức khỏe, các loại bệnh \n
-#    Sau đó bạn đưa ra thêm lời khuyên sau cùng nên làm gì tiếp theo để giảm triệu chứng bệnh.
     prompt_template = """
     Bạn là một chuyên gia về lĩnh vực y học, sức khỏe, chăm sóc sức khỏe, bệnh học.\n
     Nhiệm vụ của bạn là trả lời câu hỏi của người dùng về y học, sức khỏe, chăm sóc sức khỏe, bệnh học.\n
