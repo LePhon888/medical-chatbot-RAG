@@ -41,10 +41,11 @@ def get_text_chunks(text):
 
 def get_vector_store(text_chunks):
     # embeddings = GoogleGenerativeAIEmbeddings(model = "models/embedding-001")
-    embeddings = CohereEmbeddings(model="embed-english-light-v3.0")
+    # embeddings = CohereEmbeddings(model="embed-english-light-v3.0")
+    embeddings = CohereEmbeddings(model="embed-multilingual-v3.0")
 
     vector_store = FAISS.from_texts(text_chunks, embedding=embeddings)
-    vector_store.save_local("faiss_index")
+    vector_store.save_local("faiss_index_v2")
 
 
 def get_conversational_chain():
@@ -54,7 +55,7 @@ def get_conversational_chain():
     Bạn là một chuyên gia và bác sĩ về lĩnh vực y học, sức khỏe, chăm sóc sức khỏe, bệnh học. Bạn có thể chẩn đoán bệnh, tư vấn bệnh cho câu hỏi trên\n
     Nhiệm vụ của bạn là chỉ trả lời câu hỏi của người dùng về y học, sức khỏe, chăm sóc sức khỏe, bệnh học.\n
     Nếu câu hỏi của người dùng không phải về chủ đề y tế, y học, chẩn đoán bệnh, điều trị bệnh, thắc mắc về bệnh, triệu chứng, sức khỏe, chăm sóc sức khỏe, bệnh học thì bạn hãy trả lời: Xin lỗi, tôi không thể trả lời câu hỏi này.\n
-    Bạn hãy trả lời ưu tiên theo ngữ cảnh, nếu ngữ cảnh không phù hợp thì hãy trả lời theo cách của bạn.\n
+    Bạn hãy trả lời ưu tiên theo ngữ cảnh cộng với kiến thức của bạn, nếu ngữ cảnh không phù hợp thì hãy trả lời theo cách của bạn.\n
     Bạn hãy trả lời theo format đoạn văn dài, cung cấp thông tin thật chi tiết, cụ thể.\n
    \n
    
@@ -75,8 +76,10 @@ def user_input(user_question):
     global processed
 
     # embeddings = GoogleGenerativeAIEmbeddings(model = "models/embedding-001")
-    embeddings = CohereEmbeddings(model="embed-english-light-v3.0")
-    new_db = FAISS.load_local("faiss_index", embeddings, allow_dangerous_deserialization=True)
+    # embeddings = CohereEmbeddings(model="embed-english-light-v3.0")
+    embeddings = CohereEmbeddings(model="embed-multilingual-v3.0")
+
+    new_db = FAISS.load_local("faiss_index_v2", embeddings, allow_dangerous_deserialization=True)
     docs = new_db.similarity_search(user_question) #topk=5
     print("===============================================================================================================")
     print(docs)
